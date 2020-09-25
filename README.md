@@ -1,2 +1,2 @@
 # baltic-t-shirt
-初めてのオリジナルなFlaskアプリケーション
+PycharmのFlaskチュートリアルを元に作成
