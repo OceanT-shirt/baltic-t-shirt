@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link href="../static/style.css" rel="stylesheet" type="text/css">
+    <title>{{ expense_type }}の詳細</title>
+</head>
+<body>
+    <div id="element1">
+        <img src="{{ url_for('expense_plot', expense_id=expense_id) }}" alt="Image">
+    </div>
+    <div id="element2">
+        <p> {{ expense_type }}の詳細 </p>
+        <p> 単位:( {{ unit }} )</p>
+{#        {% if session['logged_in'] %}#}
+{#        <p>Want to add more data?</p>#}
+{#        <p>Go and <a href="{{ url_for('edit_database', expense_id=expense_id) }}">edit</a> the meteo database.</p>#}
+{#        {% else %}#}
+{#        <p>Want to edit meteo data?</p>#}
+{#        <p>Please <a href="{{ url_for('login', expense_id=expense_id) }}">login</a> first.</p>#}
+{#        {% endif %}#}
+        <hr/>
+        <p><a href="/">Back to the main page</a></p>
+    </div>
+</body>
+</html>

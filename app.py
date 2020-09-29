@@ -3,21 +3,21 @@ from functools import wraps
 
 from flask import Flask, render_template, send_file, request, session, redirect, url_for
 
-from charts import get_main_image, get_city_image
-from user_database import data, get_city_temperature, get_city_humidity, db_session, MONTHS
+from charts import get_main_image, get_city_image, get_exp_image, get_main_exp_image
+from user_database import data, get_city_temperature, get_city_humidity, db_session, MONTHS, data_e
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def main():
-    cities = [(record.city_id, record.city_name) for record in data]
-    return render_template('main.html', cities=cities)
+    expenses = [(record.expense_id, record.expense_type) for record in data_e]
+    return render_template('main.html', expenses=expenses)
 
 
 @app.route('/main.png')
 def main_plot():
-    img = get_main_image()
+    img = get_main_exp_image()
     return send_file(img, mimetype='image/png', cache_timeout=0)
 
 
@@ -31,6 +31,19 @@ def city(city_id):
 @app.route('/city<int:city_id>.png')
 def city_plot(city_id):
     img = get_city_image(city_id)
+    return send_file(img, mimetype='image/png', cache_timeout=0, )
+
+
+@app.route('/expense/<int:expense_id>')
+def expense(expense_id):
+    exp_record = data_e.get(expense_id)
+    return render_template('expense.html', expense_type=exp_record.expense_type, expense_id=expense_id,
+                           unit=exp_record.unit)
+
+
+@app.route('/expense<int:expense_id>.png')
+def expense_plot(expense_id):
+    img = get_exp_image(expense_id)
     return send_file(img, mimetype='image/png', cache_timeout=0, )
 
 

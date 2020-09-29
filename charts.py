@@ -1,6 +1,6 @@
 from io import BytesIO
 import matplotlib.pyplot as plt
-from user_database import data, get_city_temperature, get_city_humidity, CITIES, MONTHS
+from user_database import data, get_city_temperature, get_city_humidity, CITIES, MONTHS, data_e, EXPENSES, filtered
 
 
 def get_main_image():
@@ -26,6 +26,25 @@ def get_main_image():
     return img
 
 
+def get_main_exp_image():  # TODO: change this
+
+    x = range(0, len(EXPENSES))
+    cost = filtered
+    label = EXPENSES
+
+    plt.clf()
+    plt.bar(x, cost, tick_label=label)
+    plt.title('月の料金')
+    # plt.xlim(70, 95)
+    plt.ylabel('料金')
+    plt.xlabel('項目名')
+
+    img = BytesIO()
+    plt.savefig(img)
+    img.seek(0)
+    return img
+
+
 def get_city_image(city_id):
     city = data.get(city_id)
     city_temp = get_city_temperature(city)
@@ -40,6 +59,27 @@ def get_city_image(city_id):
     plt.ylabel('Average Relative Humidity', color='red')
     plt.yticks(color='red')
     plt.title(city.city_name)
+
+    img = BytesIO()  # 画像として保存する代わりにメモリに書き出し
+    plt.savefig(img)
+    img.seek(0)
+    return img
+
+
+def get_exp_image(expense_id):  # TODO: change this
+    exp = data_e.get(expense_id)
+    city_temp = get_city_temperature(exp)
+    city_hum = get_city_humidity(exp)
+
+    plt.clf()
+    plt.plot(MONTHS, city_temp, color='blue', linewidth=2.5, linestyle='-')
+    plt.ylabel('Mean Daily Temperature', color='blue')
+    plt.yticks(color='blue')
+    plt.twinx()
+    plt.plot(MONTHS, city_hum, color='red', linewidth=2.5, linestyle='-')
+    plt.ylabel('Average Relative Humidity', color='red')
+    plt.yticks(color='red')
+    plt.title(exp.expense_type)
 
     img = BytesIO()  # 画像として保存する代わりにメモリに書き出し
     plt.savefig(img)
